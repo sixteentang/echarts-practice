@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>ECharts</title>
+    <!-- 引入 echarts、地图文件和jQuery -->
+    <script src="https://cdn.bootcss.com/echarts/4.2.0-rc.2/echarts.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <script src="../static/china.js"></script>
+</head>
+<body>
+    <!-- 为ECharts准备一个具备大小（宽高）的Dom容器 -->
+    <div id="main" style="width: 1000px;height:800px;"></div>
+    <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main'));
+
+        // 显示标题，图例和空的坐标轴
+        myChart.setOption({
+            title: {
+                text:'地图案例-房价地图',
+                subtext:'2018年12月'
+            },
+            tooltip: {},
+            geo:{
+            map:'china'    
+            },
+
+            series: [{
+                name: '房价',
+                type: 'scatter',
+                coordinateSystem: 'geo',
+                data:[]
+            }]
+        });
+
+        // 异步加载数据
+        $.get('/data').done(function (data) {
+            // 填入数据
+            myChart.setOption({
+
+                series: [{
+                    // 根据名字对应到相应的系列
+                    name: '销量',
+                    data: data.data
+                }]
+            });
+        });
+
+
+    </script>
+</body>
+</html>
